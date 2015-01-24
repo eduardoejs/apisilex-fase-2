@@ -11,6 +11,8 @@ use Silex\Application;
 
 class ProdutoController implements ProdutoControllerInterface {
 
+    private $produto;
+
     public function connect(Application $app)
     {
         $produto = $app['controllers_factory'];
@@ -26,21 +28,14 @@ class ProdutoController implements ProdutoControllerInterface {
         return $produto;
     }
 
-    public function produtoSevice(Application $app)
-    {
 
+    public function setProduto($produto)
+    {
+        $this->produto = $produto;
     }
 
     public function getProduto(Application $app)
     {
-        $app['produtoService'] = function() {
-            $produto = new Produto();
-            $produtoMapper = new ProdutoMapper();
-            $produtoService = new ProdutoService($produto, $produtoMapper);
-
-            return $produtoService;
-        };
-
         $data['nome'] = null;
         $data['descricao'] = null;
         $data['valor'] = null;
@@ -52,14 +47,6 @@ class ProdutoController implements ProdutoControllerInterface {
 
     public function getProdutoId(Application $app, $id)
     {
-        $app['produtoService'] = function() {
-            $produto = new Produto();
-            $produtoMapper = new ProdutoMapper();
-            $produtoService = new ProdutoService($produto, $produtoMapper);
-
-            return $produtoService;
-        };
-
         $data['nome'] = null;
         $data['descricao'] = null;
         $data['valor'] = null;
@@ -70,6 +57,7 @@ class ProdutoController implements ProdutoControllerInterface {
             $app->abort(404, "Produto {$id} nao encontrado.");
         }
         return $app->json($result[$id]);
+
     }
 
 } 
