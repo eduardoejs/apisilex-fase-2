@@ -7,9 +7,10 @@ use EJS\Produtos\Mapper\ProdutoMapper;
 use EJS\Produtos\Service\ProdutoService;
 use EJS\Produtos\Controller\ProdutoControllerInterface;
 use Silex\Application;
+use Silex\ControllerProviderInterface;
 
 
-class ProdutoController implements ProdutoControllerInterface {
+class ProdutoController implements ControllerProviderInterface {
 
     private $produto;
 
@@ -18,16 +19,15 @@ class ProdutoController implements ProdutoControllerInterface {
         $produto = $app['controllers_factory'];
 
         $produto->get('/', function() use ($app){
-            return self::getProduto($app);
+            return $this->getProduto($app);
         });
 
         $produto->get('/{produto}', function($produto) use ($app){
-            return self::getProdutoId($app, $produto);
+            return $this->getProdutoId($app, $produto);
         });
 
         return $produto;
     }
-
 
     public function setProduto($produto)
     {
@@ -40,7 +40,7 @@ class ProdutoController implements ProdutoControllerInterface {
         $data['descricao'] = null;
         $data['valor'] = null;
 
-        $result = $app['produtoService']->insert($data);
+        $result = $app['produtoService']->listProdutos($data);
 
         return $app->json($result);
     }
@@ -51,7 +51,7 @@ class ProdutoController implements ProdutoControllerInterface {
         $data['descricao'] = null;
         $data['valor'] = null;
 
-        $result = $app['produtoService']->insert($data);
+        $result = $app['produtoService']->listProdutos($data);
 
         if(!isset($result[$id])){
             $app->abort(404, "Produto {$id} nao encontrado.");
@@ -59,5 +59,4 @@ class ProdutoController implements ProdutoControllerInterface {
         return $app->json($result[$id]);
 
     }
-
 } 

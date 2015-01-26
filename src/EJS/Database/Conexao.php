@@ -3,14 +3,14 @@
 namespace EJS\Database;
 
 
-abstract class Conexao
+class Conexao
 {
     private static $dsn = 'mysql:host=localhost;dbname=apisilex';
     private static $usuario = 'root';
     private static $senha = 'root';
     private static $opcoes = [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES UTF8' ];
 
-    private static function conectar()
+    private function conectar()
     {
         try {
             $pdo = new \PDO(self::$dsn, self::$usuario, self::$senha, self::$opcoes);
@@ -22,7 +22,7 @@ abstract class Conexao
         }
     }
 
-    public static function getDb()
+    public function getDb()
     {
         return self::conectar();
     }

@@ -3,10 +3,11 @@ namespace EJS\Controller;
 
 use Silex\Application;
 use EJS\Controller\ClienteControllerInterface;
+use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class ClienteController implements ClienteControllerInterface{
+class ClienteController implements ControllerProviderInterface{
 
     private $cliente;
 
@@ -15,11 +16,11 @@ class ClienteController implements ClienteControllerInterface{
         $cliente = $app['controllers_factory'];
 
         $cliente->get('/', function() use ($app){
-           return self::getCliente($app);
+           return $this->getCliente($app);
         });
 
         $cliente->get('/{cliente}', function($cliente) use ($app){
-            return self::getClienteId($app, $cliente);
+            return $this->getClienteId($app, $cliente);
         });
 
         return $cliente;
